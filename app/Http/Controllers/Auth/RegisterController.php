@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Mail;
 use App\Mail\WelcomeMail;
+use App\Jobs\SendWelcomeMail;
 
 class RegisterController extends Controller
 {
@@ -73,7 +74,8 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        Mail::to($user->email)->send(new WelcomeMail());
+        SendWelcomeMail::dispatch($user);
+        //Mail::to($user->email)->send(new WelcomeMail());
         return $user; 
     }
 }
